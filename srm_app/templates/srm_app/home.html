@@ -1,0 +1,15 @@
+{% extends 'srm_app/base.html' %}
+
+{% block content %}
+
+<div class="card">
+    <h3>Вітаємо в CRM</h3>
+    <p>Тут ти можеш керувати задачами.</p>
+</div>
+
+<div class="card">
+    <p>Швидкий перехід:</p>
+    <a class="btn" href="{% url 'task_list' %}">Перейти до задач</a>
+</div>
+
+{% endblock %}

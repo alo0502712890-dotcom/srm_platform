@@ -1,0 +1,25 @@
+{% extends 'srm_app/base.html' %}
+
+{% block content %}
+
+<div class="card">
+    <h2>{{ task.title|upper }}</h2>
+    <p>{{ task.description|truncatewords:5 }}</p>
+    <p>Дата: {{ date|date:"d.m.Y" }}</p>
+</div>
+
+<div class="card">
+    <h3>Коментарі</h3>
+
+    <ul>
+        {% for comment in comments %}
+            <li>{{ comment }}</li>
+        {% empty %}
+            <li>Нічого немає</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<a class="btn" href="{% url 'task_list' %}">Назад</a>
+
+{% endblock %}
