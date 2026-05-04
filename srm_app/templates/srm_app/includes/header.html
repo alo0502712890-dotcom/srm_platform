@@ -1,0 +1,13 @@
+{% load static %}
+
+<header>
+    <div class="header-flex">
+        <img src="{% static 'srm_app/images/logo.png' %}" class="logo">
+        <h2>CRM System</h2>
+    </div>
+
+    <nav>
+        <a href="{% url 'home' %}">Головна</a>
+        <a href="{% url 'task_list' %}">Задачі</a>
+    </nav>
+</header>

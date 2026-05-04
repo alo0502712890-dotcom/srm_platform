@@ -1,0 +1,12 @@
+    <div class="card">
+        <h3>{{ task.title }}</h3>
+
+        <p><strong>Статус:</strong> {{ task.status }}</p>
+        <p><strong>Пріоритет:</strong> {{ task.priority }}</p>
+        <p><strong>Виконавець:</strong> {{ task.assignee }}</p>
+        <p><strong>Дедлайн:</strong> {{ task.deadline|date:"d.m.Y" }}</p>
+
+        <a class="btn" href="{% url 'task_detail' task.id %}">
+            Детальніше
+        </a>
+    </div>
