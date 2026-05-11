@@ -6,37 +6,43 @@
 
 <div class="card">
 
-    <h2>{{ task.title|upper }}</h2>
-
-    <p class="task-description">
-        {{ task.description }}
-    </p>
-
-    <div class="task-info">
-        <p><strong>Статус:</strong> {{ task.status }}</p>
-        <p><strong>Пріоритет:</strong> {{ task.priority }}</p>
-        <p><strong>Виконавець:</strong> {{ task.assignee }}</p>
-        <p><strong>Дата:</strong> {{ date|date:"d.m.Y" }}</p>
+    <div class="task-top">
+        <h2>{{ task.title|upper }}</h2>
+        <span class="priority priority-{{ task.priority }}">
+            {{ task.get_priority_display }}
+        </span>
     </div>
 
+    <p class="task-description">{{ task.description }}</p>
+
+    <div class="task-info">
+        <p>
+            <strong>Статус:</strong>
+            <span class="task-status status-{{ task.status }}">
+                {{ task.get_status_display }}
+            </span>
+        </p>
+        <p><strong>Виконавець:</strong> {{ task.assignee }}</p>
+        <p><strong>Дедлайн:</strong> {{ task.deadline|date:"d.m.Y" }}</p>
+        <p><strong>Створено:</strong> {{ task.created_at|date:"d.m.Y H:i" }}</p>
+    </div>
 </div>
 
 <div class="card">
-
     <h3>Коментарі</h3>
 
-    <ul>
-        {% for comment in comments %}
-            <li>{{ comment }}</li>
-        {% empty %}
-            <li>Нічого немає</li>
-        {% endfor %}
-    </ul>
+    {% for comment in task.comments.all %}
+        <div class="activity-item">
+            <strong>{{ comment.author }}</strong>
+            <p>{{ comment.text }}</p>
+            <small>{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+        </div>
 
+    {% empty %}
+        <p>Коментарів поки немає</p>
+    {% endfor %}
 </div>
 
-<a class="btn" href="{% url 'task_list' %}">
-    Назад
-</a>
+<a class="btn" href="{% url 'task_list' %}">Назад</a>
 
 {% endblock %}

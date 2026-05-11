@@ -1,43 +1,25 @@
 <div class="card task-card">
 
     <div class="task-top">
-
         <h3>{{ task.title }}</h3>
-
         <span class="priority priority-{{ task.priority }}">
-            {{ task.priority }}
+            {{ task.get_priority_display }}
         </span>
-
     </div>
 
-    <p class="task-description">
-        {{ task.description|truncatewords:10 }}
-    </p>
+    <p class="task-description">{{ task.description|truncatewords:10 }}</p>
 
     <div class="task-info">
-
         <p>
             <strong>Статус:</strong>
-
             <span class="task-status status-{{ task.status }}">
-                {{ task.status }}
+                {{ task.get_status_display }}
             </span>
         </p>
 
-        <p>
-            <strong>Виконавець:</strong>
-            {{ task.assignee }}
-        </p>
-
-        <p>
-            <strong>Дедлайн:</strong>
-            {{ task.deadline|date:"d.m.Y" }}
-        </p>
-
+        <p><strong>Виконавець:</strong> {{ task.assignee }}</p>
+        <p><strong>Дедлайн:</strong> {{ task.deadline|date:"d.m.Y" }}</p>
     </div>
 
-    <a class="btn" href="{% url 'task_detail' task.id %}">
-        Детальніше
-    </a>
-
+    <a class="btn" href="{% url 'task_detail' task.id %}">Детальніше</a>
 </div>
