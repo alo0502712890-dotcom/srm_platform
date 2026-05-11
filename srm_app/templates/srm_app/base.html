@@ -5,7 +5,9 @@
 
     {% load static %}
 
-    <title>CRM System</title>
+    <title>
+        {% block title %}CRM System{% endblock %}
+    </title>
 
     <link rel="stylesheet" href="{% static 'srm_app/css/style.css' %}">
     {% block extra_css %}{% endblock %}

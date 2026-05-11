@@ -1,14 +1,28 @@
 {% extends 'srm_app/base.html' %}
 
+{% block title %}CRM System | Деталі задачі{% endblock %}
+
 {% block content %}
 
 <div class="card">
+
     <h2>{{ task.title|upper }}</h2>
-    <p>{{ task.description|truncatewords:5 }}</p>
-    <p>Дата: {{ date|date:"d.m.Y" }}</p>
+
+    <p class="task-description">
+        {{ task.description }}
+    </p>
+
+    <div class="task-info">
+        <p><strong>Статус:</strong> {{ task.status }}</p>
+        <p><strong>Пріоритет:</strong> {{ task.priority }}</p>
+        <p><strong>Виконавець:</strong> {{ task.assignee }}</p>
+        <p><strong>Дата:</strong> {{ date|date:"d.m.Y" }}</p>
+    </div>
+
 </div>
 
 <div class="card">
+
     <h3>Коментарі</h3>
 
     <ul>
@@ -18,8 +32,11 @@
             <li>Нічого немає</li>
         {% endfor %}
     </ul>
+
 </div>
 
-<a class="btn" href="{% url 'task_list' %}">Назад</a>
+<a class="btn" href="{% url 'task_list' %}">
+    Назад
+</a>
 
 {% endblock %}

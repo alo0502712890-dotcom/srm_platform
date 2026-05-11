@@ -1,12 +1,43 @@
-    <div class="card">
+<div class="card task-card">
+
+    <div class="task-top">
+
         <h3>{{ task.title }}</h3>
 
-        <p><strong>Статус:</strong> {{ task.status }}</p>
-        <p><strong>Пріоритет:</strong> {{ task.priority }}</p>
-        <p><strong>Виконавець:</strong> {{ task.assignee }}</p>
-        <p><strong>Дедлайн:</strong> {{ task.deadline|date:"d.m.Y" }}</p>
+        <span class="priority priority-{{ task.priority }}">
+            {{ task.priority }}
+        </span>
 
-        <a class="btn" href="{% url 'task_detail' task.id %}">
-            Детальніше
-        </a>
     </div>
+
+    <p class="task-description">
+        {{ task.description|truncatewords:10 }}
+    </p>
+
+    <div class="task-info">
+
+        <p>
+            <strong>Статус:</strong>
+
+            <span class="task-status status-{{ task.status }}">
+                {{ task.status }}
+            </span>
+        </p>
+
+        <p>
+            <strong>Виконавець:</strong>
+            {{ task.assignee }}
+        </p>
+
+        <p>
+            <strong>Дедлайн:</strong>
+            {{ task.deadline|date:"d.m.Y" }}
+        </p>
+
+    </div>
+
+    <a class="btn" href="{% url 'task_detail' task.id %}">
+        Детальніше
+    </a>
+
+</div>

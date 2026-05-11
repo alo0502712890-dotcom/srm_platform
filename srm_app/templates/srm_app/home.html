@@ -1,13 +1,116 @@
 {% extends 'srm_app/base.html' %}
 
+{% block title %}CRM System | Панель керування{% endblock %}
+
 {% block content %}
 
-<h2>Вітаємо в CRM</h2>
-<p>Це твій менеджер задач</p>
+<div class="dashboard-header">
 
-<div class="card">
-    <p>Швидкий перехід:</p>
-    <a class="btn" href="{% url 'task_list' %}">Перейти до задач</a>
+    <div>
+        <h1>Панель керування</h1>
+        <p>Огляд задач та активності команди</p>
+    </div>
+
+    <a class="btn" href="{% url 'task_list' %}">
+        Усі задачі
+    </a>
+
+</div>
+
+
+<div class="stats-grid">
+
+    <div class="card stat-card">
+        <p>Усього задач</p>
+        <h2>12</h2>
+    </div>
+
+    <div class="card stat-card">
+        <p>В роботі</p>
+        <h2>5</h2>
+    </div>
+
+    <div class="card stat-card">
+        <p>Виконано</p>
+        <h2>4</h2>
+    </div>
+
+    <div class="card stat-card">
+        <p>Прострочено</p>
+        <h2>3</h2>
+    </div>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+    <div class="card">
+
+        <div class="section-title">
+            <h3>Останні задачі</h3>
+            <a href="{% url 'task_list' %}">Переглянути</a>
+        </div>
+
+        <div class="mini-task">
+            <div>
+                <strong>CRM API</strong>
+                <p>Олена • 05.05.2026</p>
+            </div>
+
+            <span class="task-status status-done">
+                Done
+            </span>
+        </div>
+
+        <div class="mini-task">
+            <div>
+                <strong>UI Dashboard</strong>
+                <p>Максим • 08.05.2026</p>
+            </div>
+
+            <span class="task-status status-in_progress">
+                Progress
+            </span>
+        </div>
+
+        <div class="mini-task">
+            <div>
+                <strong>Auth System</strong>
+                <p>Ірина • 11.05.2026</p>
+            </div>
+
+            <span class="task-status status-todo">
+                To Do
+            </span>
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="section-title">
+            <h3>Активність</h3>
+        </div>
+
+        <div class="activity-item">
+            <strong>Олена</strong>
+            <p>Закрила задачу CRM API</p>
+        </div>
+
+        <div class="activity-item">
+            <strong>Максим</strong>
+            <p>Оновив Dashboard UI</p>
+        </div>
+
+        <div class="activity-item">
+            <strong>Ірина</strong>
+            <p>Створила нову задачу</p>
+        </div>
+
+    </div>
+
 </div>
 
 {% endblock %}
