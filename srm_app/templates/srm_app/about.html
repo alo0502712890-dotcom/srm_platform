@@ -1,0 +1,126 @@
+{% extends 'srm_app/base.html' %}
+
+{% block title %}
+CRM System | Про систему
+{% endblock %}
+
+{% block content %}
+
+<div class="about-page">
+
+    <div class="about-hero card">
+        <div>
+            <h1>Про CRM System</h1>
+            <p>
+                CRM System — це сучасна система для
+                керування задачами, командою та
+                робочими процесами.
+            </p>
+        </div>
+    </div>
+
+    <div class="about-grid">
+        <div class="card">
+            <h2>Мета системи</h2>
+            <p>
+                Допомогти команді ефективно
+                керувати задачами, контролювати
+                дедлайни та відстежувати
+                прогрес виконання.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>Основні можливості</h2>
+            <ul class="about-list">
+                <li>Створення та перегляд задач</li>
+                <li>Розподіл задач між виконавцями</li>
+                <li>Відстеження статусів</li>
+                <li>Система коментарів</li>
+                <li>Dashboard зі статистикою</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Команда</h2>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">
+                    O
+                </div>
+                <h3>Олена</h3>
+                <p>Backend Developer</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">
+                    M
+                </div>
+                <h3>Максим</h3>
+                <p>Frontend Developer</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">
+                    I
+                </div>
+                <h3>Ірина</h3>
+                <p>Project Manager</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="about-section-title">Статистика системи</h2>
+        <div class="about-stats-grid">
+            <div class="card about-stat-card">
+                <h2>120+</h2>
+                <p>Створених задач</p>
+            </div>
+            <div class="card about-stat-card">
+                <h2>15</h2>
+                <p>Активних користувачів</p>
+            </div>
+            <div class="card about-stat-card">
+                <h2>92%</h2>
+                <p>Виконаних задач</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card contact-card">
+        <div class="contact-header">
+            <h2>📩 Контакти</h2>
+            <p>
+                Зв’яжіться з нашою командою
+                для консультації або підтримки
+            </p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <span class="contact-icon">✉️</span>
+                <div>
+                    <strong>Email</strong>
+                    <p>crm.support@gmail.com</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <span class="contact-icon">📞</span>
+                <div>
+                    <strong>Телефон</strong>
+                    <p>+380 99 123 45 67</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <span class="contact-icon">📍</span>
+                <div>
+                    <strong>Адреса</strong>
+                    <p>Полтава, Україна</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

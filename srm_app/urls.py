@@ -22,4 +22,6 @@ urlpatterns = [
     path('tasks/<int:task_id>/', views.task_detail, name='task_detail'),
     path('tasks/', views.task_list, name='task_list'),
     path('old-url/', views.old_url, name='old_url'),
+    path('about/', views.AboutView.as_view(), name='about'),
+    path('create-task/',views.create_task,name='create_task'),
 ]

@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
+from django.views.generic import TemplateView
 
+from .forms import TaskRequestForm
 from .models import Task
+
 
 
 # Головна
@@ -52,6 +55,22 @@ def task_detail(request, task_id):
 
     return render(request, "srm_app/task_detail.html", context)
 
+
+# про нас
+class AboutView(TemplateView):
+    template_name = 'srm_app/about.html'
+
+# формa
+def create_task(request):
+    if request.method == 'POST':
+        form = TaskRequestForm(request.POST)
+        if form.is_valid():
+            return redirect('home')
+    else:
+        form = TaskRequestForm()
+
+    context = {'form': form}
+    return render(request,'srm_app/create_task.html',context)
 
 # редірект
 def old_url(request):

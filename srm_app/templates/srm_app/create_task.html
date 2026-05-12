@@ -1,0 +1,22 @@
+{% extends 'srm_app/base.html' %}
+
+{% block title %}
+CRM System | Нова задача
+{% endblock %}
+
+{% block content %}
+
+<div class="card form-card">
+    <h1>Створення задачі</h1>
+    <p>Заповніть форму для створення нової задачі.</p>
+
+    <form method="post" class="task-form">
+
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button class="btn" type="submit">Надіслати</button>
+    </form>
+</div>
+
+{% endblock %}
