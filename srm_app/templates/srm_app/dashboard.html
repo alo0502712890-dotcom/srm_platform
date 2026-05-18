@@ -1,0 +1,76 @@
+{% extends 'srm_app/base.html' %}
+
+{% block title %}
+CRM System | Мої задачі
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <div>
+        <h1>Мої задачі</h1>
+        <p>Вітаємо, {{ user.username }}</p>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="card stat-card">
+        <p>Усього задач</p>
+        <h2>{{ total_tasks }}</h2>
+    </div>
+
+    <div class="card stat-card">
+        <p>До виконання</p>
+        <h2>{{ todo_tasks }}</h2>
+    </div>
+
+    <div class="card stat-card">
+        <p>В процесі</p>
+        <h2>{{ in_progress_tasks }}</h2>
+    </div>
+
+    <div class="card stat-card">
+        <p>На перевірці</p>
+        <h2>{{ review_tasks }}</h2>
+    </div>
+
+    <div class="card stat-card">
+        <p>Виконано</p>
+        <h2>{{ done_tasks }}</h2>
+    </div>
+</div>
+
+<div class="card">
+    <div class="section-title">
+        <h3>Останні задачі</h3>
+    </div>
+
+    {% for task in latest_tasks %}
+        <div class="mini-task">
+            <div>
+                <a class="task-link" href="{% url 'task_detail' task.id %}">
+                    {{ task.title }}
+                </a>
+                <span class="priority priority-{{ task.priority }}">
+                    {{ task.get_priority_display }}
+                </span>
+                <p>Створено:{{ task.created_at|date:"d.m.Y" }}</p>
+                <p>Дедлайн: {{ task.deadline|date:"d.m.Y" }}</p>
+            </div>
+
+            <div class="mini-task-actions">
+                <span class="task-status status-{{ task.status }}">
+                    {{ task.get_status_display }}
+                </span>
+                <a class="btn small-btn"
+                   href="{% url 'task_detail' task.id %}">
+                    Детальніше
+                </a>
+            </div>
+        </div>
+    {% empty %}
+        <p>У вас поки немає задач</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

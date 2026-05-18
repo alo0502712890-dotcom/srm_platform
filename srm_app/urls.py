@@ -24,4 +24,5 @@ urlpatterns = [
     path('old-url/', views.old_url, name='old_url'),
     path('about/', views.AboutView.as_view(), name='about'),
     path('create-task/',views.create_task,name='create_task'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 ]

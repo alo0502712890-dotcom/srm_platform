@@ -1,0 +1,33 @@
+{% extends 'srm_app/base.html' %}
+
+{% block title %}
+CRM System | Авторизація
+{% endblock %}
+
+{% block content %}
+
+<div class="card login-card">
+
+    <div class="login-header">
+        <h1>Вхід</h1>
+        <p>Увійдіть у свій акаунт для доступу до CRM System</p>
+    </div>
+
+    {% if form.errors %}
+        <div class="login-error">
+            Неправильний логін або пароль
+        </div>
+    {% endif %}
+
+    <form method="post" class="login-form">
+
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn login-btn">
+            Увійти
+        </button>
+    </form>
+</div>
+
+{% endblock %}

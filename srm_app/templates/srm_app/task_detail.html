@@ -26,14 +26,29 @@
         <p><strong>Дедлайн:</strong> {{ task.deadline|date:"d.m.Y" }}</p>
         <p><strong>Створено:</strong> {{ task.created_at|date:"d.m.Y H:i" }}</p>
     </div>
+
+    <div class="card">
+        <h3>Змінити статус</h3>
+        <form method="post">
+            {% csrf_token %}
+            <select name="status" class="status-select">
+                <option value="todo">До виконання</option>
+                <option value="in_progress">В процесі</option>
+                <option value="review">На перевірці</option>
+                <option value="done">Виконано</option>
+            </select>
+            <button type="submit" class="btn">Оновити статус</button>
+        </form>
+    </div>
 </div>
 
+{% if user.is_authenticated %}
 <div class="card">
     <h3>Коментарі</h3>
 
     {% for comment in task.comments.all %}
         <div class="activity-item">
-            <strong>{{ comment.author }}</strong>
+            <strong>{{ comment.user.username }}</strong>
             <p>{{ comment.text }}</p>
             <small>{{ comment.created_at|date:"d.m.Y H:i" }}</small>
         </div>
@@ -42,7 +57,25 @@
         <p>Коментарів поки немає</p>
     {% endfor %}
 </div>
+{% endif %}
 
-<a class="btn" href="{% url 'task_list' %}">Назад</a>
+{% if user.is_authenticated %}
+<div class="card">
+    <h3>Додати коментар</h3>
+
+    <form method="post" class="task-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            {{ form.text.label_tag }}
+            {{ form.text }}
+            {{ form.text.errors }}
+        </div>
+
+        <button class="btn" type="submit">Додати</button>
+    </form>
+</div>
+{% endif %}
+
 
 {% endblock %}

@@ -6,9 +6,45 @@
         <h2>CRM System</h2>
     </div>
 
+
+    <!--Manager= Керує командою та задачами:
+    Доступ:Головна, Про систему, Всі задачі, Мої задачі
+    Створення задач, Призначення виконавців, Зміна статусів, Коментарі-->
+
+    <!--Employee= Звичайний користувач системи.
+    Доступ:Головна, Про систему, Мої задачі, Деталі своїх задач
+    Коментарі, Зміна статусу своїх задач-->
+
+    <!--неавторизований користувач системи= Про систему-->
+
     <nav>
-        <a href="{% url 'home' %}">Головна</a>
-        <a href="{% url 'task_list' %}">Задачі</a>
         <a href="{% url 'about' %}">Про систему</a>
-    </nav>
+
+         {% if request.user.is_authenticated %}
+            <a href="{% url 'home' %}">Головна</a>
+            <a href="{% url 'task_list' %}">Задачі</a>
+            <a href="{% url 'dashboard' %}">Мої задачі</a>
+            <a href="{% url 'create_task' %}">Створити задачу</a>
+         {% endif %}
+
+        <div class="nav-auth">
+
+        {% if user.is_authenticated %}
+            <span class="nav-user">{{ user.username }}</span>
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">
+                    Вийти
+                </button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}" class="login-link">
+                Увійти
+            </a>
+        {% endif %}
+
+    </div>
+</nav>
+
 </header>
