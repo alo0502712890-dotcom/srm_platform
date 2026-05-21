@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.urls import path
 from . import views
+from .api_views import task_list_api
 
 urlpatterns = [
     path('', views.AboutView.as_view(), name='about'),
@@ -26,4 +27,6 @@ urlpatterns = [
     path('about/', views.AboutView.as_view(), name='about'),
     path('create-task/',views.create_task,name='create_task'),
     path('dashboard/', views.dashboard, name='dashboard'),
+#
+    path('api/tasks/list/', task_list_api, name='task_list_api'),
 ]
