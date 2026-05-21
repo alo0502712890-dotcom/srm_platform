@@ -1,21 +1,44 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Comment
+from .models import Comment, Task
 
 
-class TaskRequestForm(forms.Form):
+class TaskRequestForm(ModelForm):
 
-    title = forms.CharField(min_length=3,max_length=100,label='Назва задачі')
-    assignee = forms.CharField(min_length=2,max_length=50,label='Виконавець')
-    description = forms.CharField(widget=forms.Textarea,min_length=10,label='Опис')
+    deadline = forms.DateTimeField(
+        widget=forms.DateTimeInput(
+            attrs={'type': 'datetime-local'}
+        )
+    )
 
-    def clean_title(self):
-        title = self.cleaned_data['title']
-        if 'test' in title.lower():
-            raise forms.ValidationError(
-                'Назва не може містити "test"'
-            )
-        return title
+    class Meta:
+        model = Task
+
+        fields = [
+            'title',
+            'description',
+            'assignee',
+            'priority',
+            'deadline',
+        ]
+
+        labels = {
+            'title': 'Назва задачі',
+            'description': 'Опис',
+            'assignee': 'Виконавець',
+            'priority': 'Пріоритет',
+            'deadline': 'Дедлайн',
+        }
+
+        widgets = {
+            'title': forms.TextInput(
+                attrs={ 'placeholder': 'Введіть назву задачі'}
+            ),
+
+            'description': forms.Textarea(
+                attrs={ 'rows': 6, 'placeholder': 'Опишіть задачу'}
+            ),
+        }
 
 
 class CommentForm(ModelForm):

@@ -1,13 +1,15 @@
+from django.http import HttpResponseForbidden, request
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import user_passes_test
 
 from .forms import TaskRequestForm
 from .forms import CommentForm
 from .models import Task, Comment
+from .permissions import is_manager
 
 
 # Головна
@@ -18,7 +20,7 @@ def home(request):
     in_progress_tasks = Task.objects.filter( status='in_progress').count()
     review_tasks = Task.objects.filter(status='review').count()
     done_tasks = Task.objects.filter( status='done').count()
-
+    recent_activity = Task.objects.order_by('-updated_at')[:5]
     latest_tasks = Task.objects.order_by('-created_at')[:5]
 
     context = {
@@ -28,34 +30,29 @@ def home(request):
         'done_tasks': done_tasks,
         'review_tasks': review_tasks,
         'latest_tasks': latest_tasks,
+        'recent_activity': recent_activity,
     }
 
     return render(request, 'srm_app/home.html', context)
 
 
 # Список задач
+@login_required
 def task_list(request):
-    status = request.GET.get("status")
 
-    tasks = Task.objects.all()
+    status = request.GET.get('status')
+
+    if is_manager(request.user):
+        tasks = Task.objects.all().order_by('-created_at')
+    else:
+        tasks = Task.objects.filter(assignee=request.user).order_by('-created_at')
 
     if status:
         tasks = tasks.filter(status=status)
 
     context = {'tasks': tasks}
 
-    return render(request, "srm_app/task_list.html", context)
-
-
-# Деталі задачі
-def task_detail(request, task_id):
-    task = get_object_or_404(
-        Task,
-        id=task_id
-    )
-    context = {"task": task,}
-    return render(request, "srm_app/task_detail.html", context)
-
+    return render(request, 'srm_app/task_list.html', context)
 
 # про нас
 class AboutView(TemplateView):
@@ -63,16 +60,19 @@ class AboutView(TemplateView):
 
 # формa
 @login_required
+@user_passes_test(is_manager)
 def create_task(request):
+
     if request.method == 'POST':
         form = TaskRequestForm(request.POST)
+
         if form.is_valid():
-            return redirect('home')
+            form.save()
+            return redirect('task_list')
     else:
         form = TaskRequestForm()
-
     context = {'form': form}
-    return render(request,'srm_app/create_task.html',context)
+    return render( request,'srm_app/create_task.html', context)
 
 # редірект
 def old_url(request):
@@ -80,45 +80,72 @@ def old_url(request):
 
 @login_required
 def dashboard(request):
-    tasks = Task.objects.filter(assignee=request.user.username)
+
+    if is_manager(request.user):
+        tasks = Task.objects.all()
+
+    else:
+        tasks = Task.objects.filter(assignee=request.user)
+
     total_tasks = tasks.count()
     todo_tasks = tasks.filter(status='todo').count()
     in_progress_tasks = tasks.filter(status='in_progress').count()
     review_tasks = tasks.filter(status='review').count()
     done_tasks = tasks.filter(status='done').count()
-
-
     latest_tasks = tasks.order_by('-created_at')[:5]
+    recent_activity = tasks.order_by('-updated_at')[:5]
     comments = Comment.objects.filter(user=request.user).order_by('-created_at')[:5]
 
     context = {
         'tasks': tasks,
+
         'total_tasks': total_tasks,
         'todo_tasks': todo_tasks,
         'in_progress_tasks': in_progress_tasks,
         'review_tasks': review_tasks,
         'done_tasks': done_tasks,
+
         'latest_tasks': latest_tasks,
+        'recent_activity': recent_activity,
         'comments': comments,
     }
 
-    return render(request,'srm_app/dashboard.html',context)
-
+    return render(
+        request,
+        'srm_app/dashboard.html',
+        context
+    )
 
 @login_required
 def task_detail(request, task_id):
 
-    task = get_object_or_404(Task,id=task_id)
+    task = get_object_or_404(Task, id=task_id)
+
+    # employee не може відкривати чужі задачі
+    if not is_manager(request.user) and task.assignee != request.user:
+        return HttpResponseForbidden("У вас немає доступу до цієї задачі")
 
     # Зміна статусу
     if request.method == 'POST' and 'status' in request.POST:
+
+        can_change_status = (
+            task.assignee == request.user
+            or is_manager(request.user)
+        )
+
+        if not can_change_status:
+            return HttpResponseForbidden("Ви не можете змінювати цю задачу")
+
         new_status = request.POST.get('status')
+
         task.status = new_status
         task.save()
-        return redirect('task_detail',task_id=task.id)
+
+        return redirect('task_detail', task_id=task.id)
 
     # Додавання коментаря
     if request.method == 'POST':
+
         form = CommentForm(request.POST)
         if form.is_valid():
             text = form.cleaned_data['text']
@@ -129,18 +156,23 @@ def task_detail(request, task_id):
             ).exists()
 
             if already_exists:
-                form.add_error('text','Такий коментар уже існує')
+                form.add_error( 'text', 'Такий коментар уже існує')
 
             else:
                 comment = form.save(commit=False)
+
                 comment.task = task
                 comment.user = request.user
-                comment.save()
 
-                return redirect('task_detail',task_id=task.id)
+                comment.save()
+                return redirect( 'task_detail', task_id=task.id)
+
     else:
         form = CommentForm()
 
-    context = {'task': task,'form': form}
+    context = {
+        'task': task,
+        'form': form
+    }
 
-    return render(request,'srm_app/task_detail.html',context)
+    return render( request, 'srm_app/task_detail.html', context)

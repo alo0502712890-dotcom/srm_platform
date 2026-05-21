@@ -7,15 +7,49 @@ CRM System | Нова задача
 {% block content %}
 
 <div class="card form-card">
+
     <h1>Створення задачі</h1>
+
     <p>Заповніть форму для створення нової задачі.</p>
 
     <form method="post" class="task-form">
 
         {% csrf_token %}
-        {{ form.as_p }}
 
-        <button class="btn" type="submit">Надіслати</button>
+        <div class="form-group">
+            {{ form.title.label_tag }}
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.assignee.label_tag }}
+            {{ form.assignee }}
+            {{ form.assignee.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.priority.label_tag }}
+            {{ form.priority }}
+            {{ form.priority.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.deadline.label_tag }}
+            {{ form.deadline }}
+            {{ form.deadline.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            {{ form.description.errors }}
+        </div>
+
+        <button class="btn" type="submit">
+            Створити задачу
+        </button>
+
     </form>
 </div>
 

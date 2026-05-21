@@ -73,10 +73,11 @@
             <h3>Остання активність</h3>
         </div>
 
-        {% for task in latest_tasks %}
+        {% for task in recent_activity %}
             <div class="activity-item">
                 <strong>{{ task.assignee }}</strong>
                 <p>Оновив задачу "{{ task.title }}"</p>
+                <small>{{ task.updated_at|date:"d.m.Y H:i" }}</small>
             </div>
 
         {% empty %}

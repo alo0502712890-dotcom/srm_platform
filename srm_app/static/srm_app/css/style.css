@@ -548,7 +548,8 @@ main {
 }
 
 .task-form input,
-.task-form textarea {
+.task-form textarea,
+.task-form select {
     width: 100%;
     padding: 14px 16px;
     border: 1px solid #d6dce5;
@@ -561,7 +562,8 @@ main {
 }
 
 .task-form input:focus,
-.task-form textarea:focus {
+.task-form textarea:focus,
+.task-form select:focus {
     outline: none;
     border-color: #3498db;
     box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
